@@ -5,8 +5,11 @@ from matplotlib import pyplot as plt
 import time
 import math
 import cv2
+import time
 from config import *
 
+K = np.array([[1154.2, 0, 671.6], [0, 1148.2, 386.0], [0, 0, 1]])
+d = np.array([-0.242, -0.048, -0.001, -0.00008, 0.022])
 
 def undistort(img, K, d):
     return cv2.undistort(img, K, d, None, K)
@@ -234,9 +237,6 @@ def get_polynomial(img, leftlane_x_pixels, rightlane_x_pixels, INTEREST_BOX):
 
     angle_BAC = calculate_angle_BAC(bottom_right, bottom_left, lane_center_pos, top_right, top_left)
     
-    # angle_BAC = calculate_angle_BAC(bottom_right, eve_lane_center_pos, top_right)
-    # print("angle_BAC:",angle_BAC)
-    # print(lane_center_pos)
     return (left_curve_rad, right_curve_rad, center), angle_BAC
 
 def draw_lanes(img, INTEREST_BOX, leftlane_fit_x, rightlane_fit_x, lane_paint = True):
@@ -263,11 +263,19 @@ def pipeline_function(frame, INTEREST_BOX, paint = False, lane_paint = False, in
     angle_str = "000"
     
     img = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
+
     warp = perspective_warp(img, INTEREST_BOX)
+
     dst = image_processing(warp)
+
     slide_img, lanes, curve, y_vales = windows(dst)
+
     curve_radius, angle_BAC = get_polynomial(dst, lanes[0],lanes[1], INTEREST_BOX)
-    img_ = draw_lanes(frame, INTEREST_BOX, lanes[0], lanes[1], lane_paint)
+    if paint :
+        img_ = draw_lanes(frame, INTEREST_BOX, lanes[0], lanes[1], lane_paint)
+    else:   
+        img_ = frame
+        
     offset = curve_radius[2]
     
     if offset <= 0.22:

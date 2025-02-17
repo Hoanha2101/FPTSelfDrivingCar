@@ -11,9 +11,6 @@ cap = cv2.VideoCapture('videos/test2.mp4')
 # bottom_right = (1080, 650)
 # bottom_left = (60, 650)
 
-K = np.array([[1154.2, 0, 671.6], [0, 1148.2, 386.0], [0, 0, 1]])
-d = np.array([-0.242, -0.048, -0.001, -0.00008, 0.022])
-
 # video 2
 top_left_set = (550, 460)
 top_right_set = (760, 460)

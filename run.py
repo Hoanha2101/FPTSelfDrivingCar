@@ -8,7 +8,7 @@ while(True):
     _,frame = cap.read()
     
     ##########
-    img_, direction_return, angle_str = pipeline_function(frame, INTEREST_BOX, paint = True, lane_paint = True, interest_box = True)
+    img_, direction_return, angle_str = pipeline_function(frame, INTEREST_BOX, paint = False, lane_paint = False, interest_box = False)
     
     ##########
     print("direction_return, angle_return:", direction_return, angle_str)
